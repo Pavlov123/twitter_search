@@ -126,6 +126,8 @@ def run_with_retries(func, retries=5):
     try:
         func()
     except TwitterRequestError as e:
+        if retries == 0:
+            raise
         print('Error:')
         print(e.status_code)
         for msg in iter(e):
@@ -134,6 +136,8 @@ def run_with_retries(func, retries=5):
         time.sleep(10)
         run_with_retries(func, retries=retries-1)
     except TwitterConnectionError as e:
+        if retries == 0:
+            raise
         print('Error:')
         print(e)
         print('Trying to continue in 10 secs')
