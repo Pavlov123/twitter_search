@@ -102,7 +102,9 @@ def query_api():
     return pager.get_iterator(wait=2)
 
 
+written = 0
 def fetch_and_write(pager, name):
+    global written
     try:
         batch = []
         for _ in range(0, TOTAL_TWEETS):
@@ -110,9 +112,14 @@ def fetch_and_write(pager, name):
 
             if len(batch) % 100 == 0:
                 write_to_file(name, batch)
+                written += len(batch)
+                print('Written {}/{}'.format(written, TOTAL_TWEETS))
                 batch = []
     finally:
-        write_to_file(name, batch)
+        if batch:
+            write_to_file(name, batch)
+            written += len(batch)
+            print('Written {}/{}'.format(written, TOTAL_TWEETS))
 
 
 def run_with_retries(func, retries=5):
