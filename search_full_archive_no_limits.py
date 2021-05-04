@@ -148,7 +148,7 @@ def run_with_retries(func, retries=5):
 
 name = '{}_tweets.csv'.format(datetime.strftime(
     datetime.now(),
-    '%d_%m_%Y_%H_%M_%S'
+    '%Y_%m_%d_%H_%M_%S'
 ))
 tweet_iterator = query_api()
 
